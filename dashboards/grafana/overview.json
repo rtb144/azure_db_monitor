@@ -1,1 +1,25 @@
+{
+  "dashboard": {
+    "title": "Database Monitoring Overview",
+    "panels": [
+      {
+        "title": "CPU Usage Comparison",
+        "type": "graph",
+        "datasource": "PostgreSQL",
+        "targets": [
+          {
+            "sql": "SELECT time_bucket('5m', timestamp) as time, 
+                    server_name,
+                    avg(metric_value) as cpu_usage
+                    FROM metrics.database_metrics 
+                    WHERE metric_name = 'cpu_percent' 
+                    AND timestamp > $__timeFrom()
+                    GROUP BY 1, 2 
+                    ORDER BY 1"
+          }
+        ]
+      }
+    ]
+  }
+}
 
